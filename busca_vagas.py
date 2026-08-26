@@ -119,6 +119,11 @@ def calculate_scores(job):
 
 
 def send_email_report(jobs):
+    if not EMAIL_USER or not EMAIL_PASS:
+        raise ValueError(
+            "ERRO CRÍTICO: EMAIL_USER ou EMAIL_PASS não configurados nos Secrets!"
+        )
+
     subject = "🤖 BUSCA DIÁRIA — NOC 22220 / TELECOM / DATA CENTER"
 
     body = "<h2>BUSCA DIÁRIA — NOC 22220 / TELECOM / DATA CENTER</h2>"
@@ -149,15 +154,13 @@ def send_email_report(jobs):
     msg["Subject"] = subject
     msg.attach(MIMEText(body, "html"))
 
-    try:
-        server = smtplib.SMTP("smtp.gmail.com", 587)
-        server.starttls()
-        server.login(EMAIL_USER, EMAIL_PASS)
-        server.send_message(msg)
-        server.quit()
-        print("E-mail enviado com sucesso!")
-    except Exception as e:
-        print(f"Erro ao enviar e-mail: {e}")
+    print(f"Tentando conectar ao SMTP do Gmail com o usuário: {EMAIL_USER}...")
+    server = smtplib.SMTP("smtp.gmail.com", 587)
+    server.starttls()
+    server.login(EMAIL_USER, EMAIL_PASS)
+    server.send_message(msg)
+    server.quit()
+    print(">>> E-MAIL ENVIADO COM SUCESSO! <<<")
 
 
 if __name__ == "__main__":
