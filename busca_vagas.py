@@ -154,13 +154,20 @@ def send_email_report(jobs):
     msg["Subject"] = subject
     msg.attach(MIMEText(body, "html"))
 
-    print(f"Tentando conectar ao SMTP do Gmail com o usuário: {EMAIL_USER}...")
-    server = smtplib.SMTP("smtp.gmail.com", 587)
-    server.starttls()
-    server.login(EMAIL_USER, EMAIL_PASS)
-    server.send_message(msg)
-    server.quit()
-    print(">>> E-MAIL ENVIADO COM SUCESSO! <<<")
+    try:
+        print(f"Tentando conectar ao SMTP do Gmail com o usuário: {EMAIL_USER}...")
+        server = smtplib.SMTP("smtp.gmail.com", 587)
+        server.starttls()
+        server.login(EMAIL_USER, EMAIL_PASS)
+        server.send_message(msg)
+        try:
+            server.quit()
+        except Exception:
+            pass
+        print(">>> E-MAIL ENVIADO COM SUCESSO! <<<")
+    except Exception as e:
+        print(f"Erro ao enviar e-mail: {e}")
+        raise e
 
 
 if __name__ == "__main__":
