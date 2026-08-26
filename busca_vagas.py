@@ -167,7 +167,6 @@ def send_email_report(jobs):
         print(">>> E-MAIL ENVIADO COM SUCESSO! <<<")
     except Exception as e:
         print(f"Erro ao enviar e-mail: {e}")
-        raise e
 
 
 if __name__ == "__main__":
