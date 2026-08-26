@@ -120,9 +120,8 @@ def calculate_scores(job):
 
 def send_email_report(jobs):
     if not EMAIL_USER or not EMAIL_PASS:
-        raise ValueError(
-            "ERRO CRÍTICO: EMAIL_USER ou EMAIL_PASS não configurados nos Secrets!"
-        )
+        print("ERRO: Credenciais de e-mail não encontradas nos Secrets.")
+        return
 
     subject = "🤖 BUSCA DIÁRIA — NOC 22220 / TELECOM / DATA CENTER"
 
@@ -155,7 +154,6 @@ def send_email_report(jobs):
     msg.attach(MIMEText(body, "html"))
 
     try:
-        print(f"Tentando conectar ao SMTP do Gmail com o usuário: {EMAIL_USER}...")
         server = smtplib.SMTP("smtp.gmail.com", 587)
         server.starttls()
         server.login(EMAIL_USER, EMAIL_PASS)
@@ -171,4 +169,3 @@ def send_email_report(jobs):
 
 if __name__ == "__main__":
     vagas = fetch_job_bank_jobs()
-    send_email_report(vagas)
