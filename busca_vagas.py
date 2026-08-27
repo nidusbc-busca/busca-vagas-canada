@@ -169,3 +169,4 @@ def send_email_report(jobs):
 
 if __name__ == "__main__":
     vagas = fetch_job_bank_jobs()
+    enviar_email(vagas)
